@@ -5,7 +5,10 @@ set expandtab
 set paste
 set hlsearch
 set path+=**
+
 syntax on
+
+autocmd Filetype gitcommit setlocal spell textwidth=72
 
 " ctags
 let Tlist_Ctags_Cmd = "/usr/bin/ctags"
