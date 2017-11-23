@@ -1,6 +1,7 @@
 " ctags, cscope etc.
 " https://github.com/vim-scripts
 " http://cscope.sourceforge.net/cscope_vim_tutorial.html
+" https://github.com/vim-scripts/a.vim
 set nu
 set ts=2
 set sw=2
