@@ -12,7 +12,13 @@ set path+=**
 
 syntax on
 
-autocmd Filetype gitcommit setlocal spell textwidth=72
+" colorscheme murphy
+
+" Even use 2 for Python
+autocmd FileType python setlocal shiftwidth=2 tabstop=2
+
+" Spell check for git commit
+autocmd Filetype gitcommit setlocal spell " textwidth=72
 
 " ctags
 let Tlist_Ctags_Cmd = "/usr/bin/ctags"
@@ -30,3 +36,4 @@ function HighlightNearCursor()
     unlet s:highlightcursor
   endif
 endfunction
+
