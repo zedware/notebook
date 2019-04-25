@@ -31,6 +31,13 @@ fi
 
 is_number $N
 
+if [ x"$V" = x"jenkins" -o x"$V" = x"wsl" -o x"$V" = x"dev" ]
+then
+  ssh_vm="ssh $V"
+else
+  usage
+fi
+
 # Change the first window's name to $prefix-0
 prefix=$V
 if [ x"$modify_current_window" = x"1" ]; then
@@ -42,13 +49,6 @@ initial=`tmux list-panes -s -F#{window_name} | grep "^$prefix" | \
 if [ x"$initial" = x"" ];
 then
   initial=0
-fi
-
-if [ x"$V" = x"jenkins" -o x"$V" = x"wsl" -o x"$V" = x"dev" ]
-then
-  ssh_vm="ssh $V"
-else
-  ssh_vm=""
 fi
 
 for x in `seq 1 $N`;
