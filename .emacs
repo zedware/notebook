@@ -37,6 +37,9 @@
 (add-to-list 'package-archives
               '("org" . "http://orgmode.org/elpa/") t)
 
+(add-to-list 'auto-mode-alist '("\\.md$" . jekyll-markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.html" . jekyll-html-mode))
+
 (package-initialize)
 (require 'ox-gfm)
 
@@ -99,6 +102,7 @@
 (setq whitespace-style '(face lines-tail)) 
 (add-hook 'org-mode-hook 'whitespace-mode)
 (add-hook 'org-mode-hook 'ruler-mode)
+(add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 80))) 
 
 (setq column-number-mode t)
 (setq make-backup-files nil)
@@ -152,3 +156,10 @@
   (lambda ()
     (load-theme 'wheatgrass)
     ))
+
+(custom-set-variables
+ '(package-selected-packages
+   (quote
+    (poly-markdown jekyll-modes markdown-preview-mode html-to-markdown ox-pandoc htmlize markdown-mode ## ox-gfm))))
+
+(custom-set-faces)
