@@ -73,13 +73,23 @@
     ("org" :components ("org-notes" "org-static"))
    ))
 
+;; https://zilongshanren.com/blog/2015-07-19-add-org-mode-support.html#orgheadline11
+(defadvice org-html-paragraph
+  (before org-html-paragraph-advice (paragraph contents info) activate)
+  "Join consecutive Chinese lines into a single long line without unwanted space when exporting org-mode to html."
+  (let* ((origin-contents (ad-get-arg 1))
+    (fix-regexp "[[:multibyte:]]")
+    (fixed-contents (replace-regexp-in-string
+    (concat "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
+    (ad-set-arg 1 fixed-contents)))
+
 ;; === Latex ===
 ;; Use xelatex instead of pdflatex since the latter does not work well
 ;; for Chinese characters.
 (setq org-latex-pdf-process 
-    '("xelatex -interaction nonstopmode -output-directory %o %f"
-	  "xelatex -interaction nonstopmode -output-directory %o %f"
-	  "xelatex -interaction nonstopmode -output-directory %o %f"))
+  '("xelatex -interaction nonstopmode -output-directory %o %f"
+  "xelatex -interaction nonstopmode -output-directory %o %f"
+  "xelatex -interaction nonstopmode -output-directory %o %f"))
 
 ;; Customize the latex template  
 ;; Still need improvements
@@ -99,7 +109,9 @@
 ;; Force wrap at column 80
 (require 'whitespace) 
 (setq whitespace-line-column 80)
+;; It will disable M-x whitespace-cleanup?
 (setq whitespace-style '(face lines-tail)) 
+
 (add-hook 'org-mode-hook 'whitespace-mode)
 (add-hook 'org-mode-hook 'ruler-mode)
 (add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 80))) 
