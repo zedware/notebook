@@ -1,28 +1,3 @@
-;;; === Windows 7/10 Simplified Chinese ===
-;;; Set the default shell to be gitbash for Windows.
-;(setq explicit-shell-file-name
-;      "/usr/bin/bash")
-;      ; "C:/Windows/System32/bash.exe")
-;;;
-;(setq shell-file-name explicit-shell-file-name)
-;
-;;;(set-language-environment "UTF-8")
-;;;(set-locale-environment "UTF-8")
-;
-;;; Display Chinese characters correctly in "M-! dir". 
-;(prefer-coding-system 'utf-8)
-;(setq file-name-coding-system 'gbk)
-;(set-terminal-coding-system 'gbk)
-;(set-keyboard-coding-system 'gbk)
-;(setq locale-coding-system 'gbk)
-;(set-selection-coding-system 'gbk)
-;(set-clipboard-coding-system 'ctext)
-;(set-clipboard-coding-system 'gbk)
-;(set-terminal-coding-system 'gbk)
-;(set-buffer-file-coding-system 'gbk)
-;(modify-coding-system-alist 'process "." 'gbk)
-;(setq default-process-coding-system '(gbk . gbk))
-
 ;; === Packages ===
 ;; Add the following three lines to enable package install.
 ;; then M-x package-list-packages to list and install ox-gfm.
@@ -82,13 +57,10 @@
 
 ;; http://ergoemacs.org/emacs/modernization_fill-paragraph.html
 (defun xah-fill-or-unfill ()
-  "Reformat current paragraph or region to `fill-column', like `fill-paragraph' or “unfill”.
-When there is a text selection, act on the selection, else, act on a text block separated by blank lines.
-URL `http://ergoemacs.org/emacs/modernization_fill-paragraph.html'
-Version 2017-01-08"
+  "Reformat current paragraph or region to `fill-column', like `fill-paragraph' or “unfill”. Version 2017-01-08"
   (interactive)
-  ;; This command symbol has a property “'compact-p”, the possible values are t and nil. This property is used to easily determine whether to compact or uncompact, when this command is called again
-  (let ( ($compact-p
+  ;; This command symbol has a property “'compact-p”, the possible values are t and nil. 
+  (let (($compact-p
           (if (eq last-command this-command)
               (get this-command 'compact-p)
             (> (- (line-end-position) (line-beginning-position)) fill-column)))
@@ -113,28 +85,6 @@ Version 2017-01-08"
       (let ((fill-column most-positive-fixnum ))
         (fill-region $p1 $p2)))
     (put this-command 'compact-p (not $compact-p))))
-
-;; === Latex ===
-;; Use xelatex instead of pdflatex since the latter does not work well
-;; for Chinese characters.
-(setq org-latex-pdf-process 
-    '("xelatex -interaction nonstopmode -output-directory %o %f"
-	  "xelatex -interaction nonstopmode -output-directory %o %f"
-	  "xelatex -interaction nonstopmode -output-directory %o %f"))
-
-;; Customize the latex template
-;; Still need improvements
-(unless (boundp 'org-latex-classes)
-  (setq org-latex-classes nil))
-(require 'ox-latex)  
-(add-to-list 'org-latex-classes
-             '("article-zh"
-               "\\documentclass[11pt]{article}\n\\usepackage{fontspec}\n\\usepackage{geometry}\n\\usepackage{hyperref}\n\\setmainfont{Microsoft Yahei}\n\\setsansfont{Microsoft Yahei}\n\\setmonofont{Microsoft Yahei}\n\\geometry{a4paper, textwidth=6.5in, textheight=10in,marginparsep=7pt, marginparwidth=.6in}\n\\author{Wenliang Zhang}\n[NO-DEFAULT-PACKAGES][NO-PACKAGES]"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 ;; === Misc ===
 ;; Force wrap at column 80
