@@ -1,0 +1,15 @@
+digraph FileSystemState {
+    node [shape=circle,height=1.2,width=1.2,fixedsize=true]
+    edge [style=solid,color=red];
+    /* root should be Unmounted, but Mounted looks better. */
+    "Mounted" [root=true]
+    "Unmounted" -> "Mounted" [label="mount",weight=0.85]
+    "Mounted" -> "Unmounted" [label="unmount"]
+    "Mounted" -> "Frozen" [label="freeze"]
+    "Mounted" -> "Paused" [label="pause"]
+    "Mounted" -> "Mounted" [label="modifyMount"]
+    "Frozen" -> "Mounted" [label="thaw"]
+    "Frozen" -> "Unmounted" [label="unmount"]
+    "Paused" -> "Mounted" [label="resume"]
+    "Paused" -> "Unmounted" [label="unmount"]
+}

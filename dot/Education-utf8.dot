@@ -1,0 +1,15 @@
+﻿digraph Education {
+
+    node [shape=circle];
+    edge [style=solid,color=red,fontname="simsun"];
+    "童生" -> "秀才" [label="县试->府试->院试"];
+    "秀才" -> "生员" [label="入学"];
+    x [shape=diamond,label="乡试"];
+    "监生" -> x [dir=none];
+    "生员" -> x [dir=none];
+    "贡生" -> x [dir=none];
+    x -> "举人";
+    "举人" -> "贡士" [label="会试"];
+    /* 进士一甲三名依次称状元、榜眼、探花。二甲称赐进士出身，三甲称同进士出身 */
+    "贡士" -> "进士" [label="殿试"];
+}

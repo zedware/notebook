@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export LC_ALL=zh_CN.GBK
+export LANG=zh_CN.GBK

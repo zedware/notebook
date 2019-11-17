@@ -1,0 +1,13 @@
+Compile MySQL 5.1 with debuginfo.
+
+$ pwd
+/home/wenliang/Workspace/sandbox/mysql-5.1.52
+
+$ ./configure --with-debug
+
+Compile the sample program.
+
+$ make 
+$ make check
+
+The program will connect to 127.0.0.1:9876 using root/mysql.
