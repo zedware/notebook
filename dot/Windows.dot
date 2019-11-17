@@ -1,0 +1,25 @@
+digraph Windows {
+    edge [style=solid,color=red];
+    "C:" -> "AUTOEXEC.BAT"
+    "C:" -> "CONFIG.SYS"
+    "AUTOEXEC.BAT" [shape=box,label="DOS file",color=yellow,style=filled];
+    "CONFIG.SYS" [shape=box,label="DOS file",color=yellow,style=filled];
+    "C:" -> "Document and Settings"
+    "C:" -> "Drivers"
+    "C:" -> "Program Files"
+    "C:" -> "Windows"
+    "Document and Settings" -> "Administrator"
+    "Document and Settings" -> "All Users"
+    "Document and Settings" -> "tom"
+    "tom" -> "Desktop"
+    "tom" -> "Favorites"
+    "tom" -> "My Documents"
+    "tom" -> "Start Menu"
+    "Desktop" -> "My Computer"
+    "Desktop" -> "My Document"
+    "Desktop" -> "Recycle Bin"
+    "Desktop" -> "tom.png"
+    "tom.png" [shape=box,label="Thomas's photo",color=red,style=filled];
+    "Desktop" -> "chess.pgn"
+    "chess.pgn" [shape=box,label="Master's game",color=green,style=filled];
+}

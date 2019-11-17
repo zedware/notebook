@@ -1,0 +1,11 @@
+digraph UNIX {
+    edge [style=solid,color=red];
+    "/" -> "bin"
+    "/" -> "etc"
+    "/" -> "home" [label="user data",style=dashed,color=green]
+    "/" -> "usr"
+    "home" -> "tom"
+    "home" -> "bill"
+    "tom" [shape=box,label="Thomas",color=red,style=filled];
+    "bill" [shape=circle,label="William",color=blue,style=filled];
+}
