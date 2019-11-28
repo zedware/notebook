@@ -1,0 +1,15 @@
+#!/usr/bin/env gnuplot
+
+set terminal png nocrop enhanced font "verdana,9" size 800,600 
+set output "TPC-H.png"
+
+set title 'TPC-H'
+set ylabel 'Query time in seconds'
+
+set boxwidth 0.8
+set style fill solid 1.00 
+
+set style data histograms
+plot "TPC-H.dat" using 2:xtic(1) title 'DB1' lt rgb "#406090", "" using 3 title 'DB2' lt rgb "#40FF00"
+
+# pause 5
