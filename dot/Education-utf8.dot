@@ -1,4 +1,4 @@
-﻿digraph Education {
+digraph Education {
 
     node [shape=circle];
     edge [style=solid,color=red,fontname="simsun"];
