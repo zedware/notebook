@@ -1,24 +1,27 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
 A simple interactive MySQL client written in python.
 
-To install the MySQL Connector/Python, visit:
-http://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html
+To install the MySQL Connector/Python, 
+ $ pip3 install mysql-connector
+http://dev.mysql.com/doc/connector-python/
 """
 
+from os import system, name
 import sys
 import argparse
 import re
 import mysql.connector
+
 
 def main():
     """
     The main loop to process the statements.
     """
 
-    # To overide the default '-h' options with conflict handler 'resolve'.
+    # To override the default '-h' options with conflict handler 'resolve'.
     parser = argparse.ArgumentParser(description='Interactive MySQL client',
                                      conflict_handler='resolve')
     parser.add_argument('-h', '--host', help='host', required=False)
@@ -29,23 +32,18 @@ def main():
     args = parser.parse_args()
 
     # Set the default options.
-    config = {
-        'host': '',
-        'port': '',
-        'user': '',
-        'password': '',
-        'database': '',
-        'use_unicode': True,
-        'charset': 'utf8'
-    }
-
-    config['host'] = args.host if args.host is not None else '127.0.0.1'
-    config['port'] = args.port if args.port is not None else '3306'
-    config['user'] = args.user if args.user is not None else 'root'
-    config['password'] = args.password if args.password is not None else ''
-    config['database'] = args.database if args.database is not None else 'test'
+    config = {'host': args.host if args.host is not None else '127.0.0.1',
+              'port': args.port if args.port is not None else '3306',
+              'user': args.user if args.user is not None else 'root',
+              'password': args.password if args.password is not None else '',
+              'database': args.database if args.database is not None else 'test', 'use_unicode': True,
+              'charset': 'utf8'}
 
     cnx = mysql.connector.connect(**config)
+    if name == 'darwin' or name == 'linux':
+        _ = system('clear')
+    elif name == 'nt':
+        _ = system('cls')
 
     while True:
         cur = cnx.cursor()
@@ -57,6 +55,7 @@ def main():
             else:
                 sys.stdout.write("    -> ")  # waiting for a delimeter (;)
 
+            sys.stdout.flush()
             line += sys.stdin.readline()
 
             if single_line:
@@ -65,7 +64,7 @@ def main():
                     return
                 single_line = False
 
-            # Match a delimeter (;) at the end of the string
+            # Match a delimiter (;) at the end of the string
             if re.search(r';\s*$', line):
                 break
 
@@ -74,7 +73,7 @@ def main():
             for row in cur.fetchall():
                 sys.stdout.write(repr(row) + '\n')
 
-        except (mysql.connector.errors.InterfaceError) as err1:
+        except mysql.connector.errors.InterfaceError as err1:
             # not used
             _ = err1
             continue
@@ -89,6 +88,6 @@ def main():
     cnx.close()
     return
 
+
 if __name__ == '__main__':
     main()
-
