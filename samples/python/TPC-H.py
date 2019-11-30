@@ -1,10 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # https://pythonspot.com/matplotlib/
 import numpy as np
 import matplotlib.pyplot as plt
 
 plt.rcdefaults()
 # "S3" is b'Q1' etc.
-x, y1, y2 = np.loadtxt('../../dot/TPC-H.dat',
+x, y1, y2 = np.loadtxt('./TPC-H.dat',
                        dtype={'names': ('Query', 'DB1', 'DB2'),
                               'formats': ('U3', 'float', 'float')},
                        delimiter='\t',
