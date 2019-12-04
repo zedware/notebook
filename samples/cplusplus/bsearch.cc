@@ -17,11 +17,11 @@ inline int64_t get_usec(struct timeval v) {
 }
   
 void generate(Value *&data, int64_t n) {
-  assert(data == NULL);
+  assert(data == nullptr);
   assert(n > 0);
 
   data = new Value[n];
-  assert(data != NULL);
+  assert(data != nullptr);
 
   for (int64_t i = 0; i < n; i++) {
     data[i] = Value(i);
@@ -29,17 +29,17 @@ void generate(Value *&data, int64_t n) {
 }
 
 void sort(Value *data, int64_t n) {
-  assert(data != NULL);
+  assert(data != nullptr);
   assert(n > 0);
 
-  // qsort(data, n, sizeof(Value), NULL);
+  // qsort(data, n, sizeof(Value), nullptr);
   for (int64_t i = 0; i < n - 1; i++) {
     assert(data[i] <= data[i + 1]);
   }
 }
 
 inline int64_t bsearch_basic(Value *data, int64_t n, Value v) {
-  assert(data != NULL);
+  assert(data != nullptr);
   assert(n > 0);
   int64_t low = 0, high = n;
   int64_t mid;
@@ -58,7 +58,7 @@ inline int64_t bsearch_basic(Value *data, int64_t n, Value v) {
 }
 
 inline int64_t bsearch_quickcmp(Value *data, int64_t n, Value v) {
-  assert(data != NULL);
+  assert(data != nullptr);
   assert(n > 0);
   int64_t low = 0, high = n;
   int64_t mid;
@@ -88,12 +88,12 @@ inline Value get_max(Value *data, int64_t n) {
 }
 
 void search(Value *data, int64_t n, func ptr) {
-  assert(data != NULL);
+  assert(data != nullptr);
   assert(n > 0);
-  assert(ptr != NULL);
+  assert(ptr != nullptr);
 
   struct timeval start, end;
-  gettimeofday(&start, NULL);
+  gettimeofday(&start, nullptr);
 
   for (int64_t i = 0; i < n; i++) {
     Value v = i;
@@ -117,7 +117,7 @@ void search(Value *data, int64_t n, func ptr) {
     }
   }
 
-  gettimeofday(&end, NULL);
+  gettimeofday(&end, nullptr);
   int64_t usec = get_usec(end) - get_usec(start);
   std::cout << usec / 1000 << " ms, and " << usec % 1000 << " micro seconds" << std::endl;
 }
@@ -129,7 +129,7 @@ void run(Value *data, int64_t n, func ptr) {
 }
 
 int main(void) {
-  Value *data = NULL;
+  Value *data = nullptr;
   run(data, 1024, bsearch_basic);
   run(data, 1024 * 1024, bsearch_basic);
   //
