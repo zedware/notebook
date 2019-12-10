@@ -40,10 +40,13 @@ def main():
               'charset': 'utf8'}
 
     cnx = mysql.connector.connect(**config)
-    if name == 'darwin' or name == 'linux':
+    if name == 'posix':
         _ = system('clear')
     elif name == 'nt':
         _ = system('cls')
+    else:
+        sys.stdout.write('Unknown os.name:' + name + '\n')
+        sys.stdout.flush()
 
     while True:
         cur = cnx.cursor()
