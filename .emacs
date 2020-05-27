@@ -1,3 +1,6 @@
+;; Based on macOS, Windows or WSL may be different.
+;; Some sites may not be accessable, use mirrors when needed.
+
 ;; === Packages ===
 ;; Add the following three lines to enable package install.
 ;; then M-x package-list-packages to list and install ox-gfm.
@@ -18,8 +21,8 @@
 ;; === Proxy ===
 (setq url-proxy-services
        '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-         ("http" . "http://127.0.0.1:12639")
-         ("https" . "http://127.0.0.1:12639")))
+         ("http" . "http://127.0.0.1:12345")
+         ("https" . "http://127.0.0.1:12345")))
 
 ;; === Org publish ===
 ;; http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html
@@ -151,6 +154,7 @@
     ))
 
 ;; MacOS default font is Menlo 12, Microsoft Yahei can also be used.
+;; Windows Chinese edition, pls. use 微软雅黑 to avoid freeze when editing Chinese characters.
 (if (version< "27.0" emacs-version)
   (set-frame-font "Menlo 14")
   (set-default-font "Menlo 14"))
@@ -160,4 +164,3 @@
 (if (version< "27.0" emacs-version)
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
   (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
-
