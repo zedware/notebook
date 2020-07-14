@@ -75,7 +75,7 @@ autocmd FileType python setlocal shiftwidth=2 tabstop=2
 autocmd Filetype gitcommit setlocal spell " textwidth=72
 
 "=Color scheme
-" colorscheme murphy
+colorscheme koehler
 
 "=ctags
 let Tlist_Ctags_Cmd = "/usr/bin/ctags"
