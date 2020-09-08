@@ -153,6 +153,9 @@
     (load-theme 'wheatgrass)
     ))
 
+;; WSL2 may need to disable font cache to avoid freezing.
+;; (setq inhibit-compacting-font-caches t)
+
 ;; MacOS default font is Menlo 12, Microsoft Yahei can also be used.
 ;; Windows Chinese edition, pls. use 微软雅黑 to avoid freeze when editing Chinese characters.
 (if (version< "27.0" emacs-version)
