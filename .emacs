@@ -1,5 +1,5 @@
-;; Based on macOS, Windows or WSL may be different.
-;; Some sites may not be accessable, use mirrors when needed.
+;; Verified on macOS, Windows or WSL may be different.
+;; Some sites may not be accessable, use mirrors if needed.
 
 ;; === Packages ===
 ;; Add the following three lines to enable package install.
@@ -8,9 +8,9 @@
 ;; http://orgmode.org/manual/Installation.html#Installation
 (require 'package)
 (add-to-list 'package-archives
-     	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+     	   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
-              '("org" . "http://orgmode.org/elpa/") t)
+             '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 (require 'ox-gfm)
 
@@ -156,8 +156,8 @@
 ;; WSL2 may need to disable font cache to avoid freezing.
 ;; (setq inhibit-compacting-font-caches t)
 
+;; Windows should use 微软雅黑 to avoid freezing.
 ;; MacOS default font is Menlo 12, Microsoft Yahei can also be used.
-;; Windows Chinese edition, pls. use 微软雅黑 to avoid freeze when editing Chinese characters.
 (if (version< "27.0" emacs-version)
   (set-frame-font "Menlo 14")
   (set-default-font "Menlo 14"))
@@ -167,3 +167,5 @@
 (if (version< "27.0" emacs-version)
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
   (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+
+;; END
