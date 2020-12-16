@@ -7,9 +7,13 @@ fi
 
 file="$1"
 if [ ! -f "$file" ]; then
-  echo "ERROR: $file not exists or not a file.
+  echo "ERROR: $file not exists or not a file."
   exit 1
 fi
 
-# \x1B is ^[, \[ is [.
-sed -i -e 's/\x1B\[[0-9A-Za-z]\{1,\}\x1B\[K//g' -e 's/\x1B\[K//g' "$file"
+sed -e 's/\x1B\[[0-9A-Za-z]\{0,2\}\x1B\[K//g' \
+    -e 's/\x1B\[K//g' \
+    -e 's/\x1B\[[0-9]m//g' \
+    -e 's/\x1B\[[0-9][0-9]m//g' \
+    -e 's/\x1B\[[0-9][0-9];[0-9][0-9]m//g' \
+    "$file"
