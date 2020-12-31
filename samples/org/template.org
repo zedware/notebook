@@ -1,0 +1,8 @@
+#+AUTHOR: FIXME
+#+TITLE: FIXME
+#+OPTIONS: ^:nil toc:nil title:nil
+#+OPTIONS: htm-postamble:nil 
+#+HTML_HEAD: <style type="text/css">body{ max-width:50%; }</style>
+
+'title:nil' is to discarding the title, since ~/.emacs uses html premble, see 
+https://emacs.stackexchange.com/questions/45191/how-to-place-author-and-date-under-title
