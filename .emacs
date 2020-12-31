@@ -48,6 +48,15 @@
     ("org" :components ("org-notes" "org-static"))
    ))
 
+;; https://emacs.stackexchange.com/questions/45191/how-to-place-author-and-date-under-title
+(setq org-html-preamble-format 
+      '(("en"
+         "<h1 class=\"title\">%t</h1>
+          <p class=\"subtitle\">%d By %a</p>")))(setq org-html-preamble-format 
+      '(("en"
+         "<h1 class=\"title\">%t</h1>
+          <p class=\"subtitle\">%d By %a</p>")))
+
 ;; https://zilongshanren.com/blog/2015-07-19-add-org-mode-support.html#orgheadline11
 (defadvice org-html-paragraph
   (before org-html-paragraph-advice (paragraph contents info) activate)
