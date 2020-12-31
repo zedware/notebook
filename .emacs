@@ -52,9 +52,6 @@
 (setq org-html-preamble-format 
       '(("en"
          "<h1 class=\"title\">%t</h1>
-          <p class=\"subtitle\">%d By %a</p>")))(setq org-html-preamble-format 
-      '(("en"
-         "<h1 class=\"title\">%t</h1>
           <p class=\"subtitle\">%d By %a</p>")))
 
 ;; https://zilongshanren.com/blog/2015-07-19-add-org-mode-support.html#orgheadline11
