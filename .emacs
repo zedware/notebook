@@ -1,5 +1,5 @@
-;; Verified on macOS, Windows or WSL may be different.
-;; Some sites may not be accessable, use mirrors if needed.
+;; === Default encoding ===
+(prefer-coding-system 'utf-8)
 
 ;; === Packages ===
 ;; Add the following three lines to enable package install.
@@ -7,24 +7,35 @@
 ;; then add the fourth line: (require 'ox-gfm).
 ;; http://orgmode.org/manual/Installation.html#Installation
 (require 'package)
-(add-to-list 'package-archives
-     	   '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
+(setq package-archives '(
+   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+   ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
 (require 'ox-gfm)
 
+;; === Proxy ===
+;; Replace proxy.google.com with your own.
+;; (setq url-proxy-services '(
+;;   ("no_proxy" . "^\\(localhost\\|10.*\\)")
+;;   ("http" . "proxy.google.com:8080")
+;;   ("https" . "proxy.google.com:8080")))
+
+;; === Chinese font ===
+;; Disable font cache to avoid freezing
+(setq inhibit-compacting-font-caches t)
+;; https://github.com/tumashu/cnfonts#org8dffa7c
+(require 'cnfonts)
+;; 让 cnfonts 随着 Emacs 自动生效。
+(cnfonts-enable)
+;; 让 spacemacs mode-line 中的 Unicode 图标正确显示。
+(cnfonts-set-spacemacs-fallback-fonts)
+
+;; === Markdown ===
 ;; Jekyll markdown/html
 (add-to-list 'auto-mode-alist '("\\.md$" . jekyll-markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.html" . jekyll-html-mode))
 
-;; === Proxy ===
-(setq url-proxy-services
-       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-         ("http" . "http://127.0.0.1:12345")
-         ("https" . "http://127.0.0.1:12345")))
-
-;; === Org publish ===
+;; === Org ===
 ;; http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html
 (require 'ox-publish)
 (setq org-publish-project-alist
@@ -41,7 +52,7 @@
     ("org-static"
     :base-directory "~/workspace/org"
     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-    :publishing-directory "~/workspace/publish"
+    :publishing-directory ~/workspace/publish"
     :recursive t
     :publishing-function org-publish-attachment
     )
@@ -66,9 +77,9 @@
 
 ;; http://ergoemacs.org/emacs/modernization_fill-paragraph.html
 (defun xah-fill-or-unfill ()
-  "Reformat current paragraph or region to `fill-column', like `fill-paragraph' or “unfill”. Version 2017-01-08"
+  "Reformat current paragraph or region to `fill-column', like `fill-paragraph' or ¡°unfill¡±. Version 2017-01-08"
   (interactive)
-  ;; This command symbol has a property “'compact-p”, the possible values are t and nil. 
+  ;; This command symbol has a property ¡°'compact-p¡±, the possible values are t and nil. 
   (let (($compact-p
           (if (eq last-command this-command)
               (get this-command 'compact-p)
@@ -108,8 +119,9 @@
 (add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 80)))
 
 (setq column-number-mode t)
-(setq make-backup-files nil)
-(setq package-selected-packages (quote (ox-gfm org-plus-contrib org html2org whitespace-cleanup-mode poly-markdown jekyll-modes markdown-preview-mode html-to-markdown ox-pandoc htmlize markdown-modee)))
+(setq make-backup-files t)
+(setq package-selected-packages
+  (quote (ox-gfm org-plus-contrib org html2org whitespace-cleanup-mode poly-markdown jekyll-modes markdown-preview-mode html-to-markdown ox-pandoc htmlize markdown-modee)))
 (setq savehist-mode t)
 (setq show-paren-mode t)
 (setq tab-width 2)
@@ -126,9 +138,9 @@
 
 ;; Set find, grep etc.
 (require 'grep)
-(setq grep-program "/usr/bin/grep")
-(setq find-program "/usr/bin/find")
-(setq markdown-command "/usr/local/bin/markdown")
+;;(setq grep-program "/usr/bin/grep")
+;;(setq find-program "/usr/bin/find")
+;;(setq markdown-command "/usr/local/bin/markdown")
 
 ;; single instance
 (require 'server)
@@ -159,19 +171,8 @@
     (load-theme 'wheatgrass)
     ))
 
-;; WSL2 may need to disable font cache to avoid freezing.
-;; (setq inhibit-compacting-font-caches t)
-
-;; Windows should use 微软雅黑 to avoid freezing.
-;; MacOS default font is Menlo 12, Microsoft Yahei can also be used.
-(if (version< "27.0" emacs-version)
-  (set-frame-font "Menlo 14")
-  (set-default-font "Menlo 14"))
-
-;; https://github.crookster.org/emacs27-from-homebrew-on-macos-with-emoji/
-;; Install Emacs 27 from source code by homebrew
-(if (version< "27.0" emacs-version)
-  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-  (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+;; == Default work dir/file ===
+(cd "~/workspace/org")
+(find-file "~/workspace/org/todo.org")
 
 ;; END
