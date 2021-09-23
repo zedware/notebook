@@ -15,7 +15,7 @@ for x in $(seq $start $end); do
     echo "test case: $x"
     in=input$x.txt
     out=output$x.txt
-    exp=expect$x.txt
+    exp=expected$x.txt
     # prog, in, out, exp should exist
     $prog < $in > $out
     diff $out $exp
