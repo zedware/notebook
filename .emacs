@@ -1,16 +1,36 @@
 ;; === Default encoding ===
 (prefer-coding-system 'utf-8)
 
+;; Emacs "activates" ALL installed packages BEFORE reading the 
+;; user-init-file unless set package-enable-at-startup to nil 
+;; in the early init file.
+(setq package-enable-at-startup nil)
+
+;; === Packages configurated by use-package ===
+;; https://github.com/jwiegley/use-package#installing-use-package
+;; This is only needed once, near the top of the file
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  ;; (add-to-list 'load-path "<path where use-package is installed>")
+  (require 'use-package))
+
+;; Use hotkey to copy from system clipboard directly.
+;; This is for Microsoft Terminal and WSL2 on Windows
+;; https://github.com/spudlyo/clipetty/
+(use-package clipetty
+  :ensure t
+  :bind ("M-w" . clipetty-kill-ring-save))
+
 ;; === Packages ===
 ;; Add the following three lines to enable package install.
-;; then M-x package-list-packages to list and install ox-gfm.
-;; then add the fourth line: (require 'ox-gfm).
+;; then M-x package-install RET ox-gfm RET
 ;; http://orgmode.org/manual/Installation.html#Installation
 (require 'package)
 (setq package-archives '(
    ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
    ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
+
 (require 'ox-gfm)
 
 ;; === Proxy ===
@@ -24,6 +44,7 @@
 ;; Disable font cache to avoid freezing
 (setq inhibit-compacting-font-caches t)
 ;; https://github.com/tumashu/cnfonts#org8dffa7c
+;; M-X package-install RET cnfonts RET
 (require 'cnfonts)
 ;; 让 cnfonts 随着 Emacs 自动生效。
 (cnfonts-enable)
@@ -35,24 +56,34 @@
 (add-to-list 'auto-mode-alist '("\\.md$" . jekyll-markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.html" . jekyll-html-mode))
 
+;; === Working directory ===
+(cond ((eq system-type 'widows)
+       (setq wdir "d:/Workspace/org")
+       (setq pdir "d:/Workspace/publish"))
+      ((eq system-type 'gnu/linux)
+       (setq wdir "/home/wsl/workspace/org")
+       (setq pdir "/home/wsl/workspace/publish"))
+)
+
 ;; === Org ===
 ;; http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html
+;; Backtick and comma used to evaluate variables wdir and pdir.
 (require 'ox-publish)
 (setq org-publish-project-alist
-  '(
+  `(
     ("org-notes"
-     :base-directory "~/workspace/org"
+     :base-directory ,wdir
      :base-extension "org"
-     :publishing-directory "~/workspace/publish"
+     :publishing-directory ,pdir
      :recursive t
      :publishing-function org-html-publish-to-html
      :headline-levels 4  ; Just the default for this project.
      :auto-preamble t
      )  
     ("org-static"
-    :base-directory "~/workspace/org"
+    :base-directory ,wdir
     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-    :publishing-directory ~/workspace/publish"
+    :publishing-directory ,pdir
     :recursive t
     :publishing-function org-publish-attachment
     )
@@ -77,7 +108,7 @@
 
 ;; http://ergoemacs.org/emacs/modernization_fill-paragraph.html
 (defun xah-fill-or-unfill ()
-  "Reformat current paragraph or region to `fill-column', like `fill-paragraph' or ¡°unfill¡±. Version 2017-01-08"
+  "Reformat current paragraph or region to `fill-column', like `fill-paragraph' Version 2017-01-08"
   (interactive)
   ;; This command symbol has a property ¡°'compact-p¡±, the possible values are t and nil. 
   (let (($compact-p
@@ -160,7 +191,6 @@
 (setq inhibit-startup-screen t)
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
 (setq org-startup-truncated nil)
-(setq package-enable-at-startup nil)
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -171,8 +201,10 @@
     (load-theme 'wheatgrass)
     ))
 
-;; == Default work dir/file ===
-(cd "~/workspace/org")
-(find-file "~/workspace/org/todo.org")
+;; === Default directory and files === 
+(message "Set workspace dir as: %s" wdir)
+(cd wdir)
+(find-file (concat (file-name-as-directory wdir) "todo.org"))
+(find-file (concat (file-name-as-directory wdir) "tmp.org"))
 
 ;; END
