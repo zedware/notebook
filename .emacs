@@ -1,3 +1,8 @@
+;; === Debug .emacs ===
+;; Turn it on: (setq debug-on-error t)
+;; Turn it off: (setq debug-on-error nil)
+(setq debug-on-error nil)
+
 ;; === Default encoding ===
 (prefer-coding-system 'utf-8)
 
@@ -5,6 +10,20 @@
 ;; user-init-file unless set package-enable-at-startup to nil 
 ;; in the early init file.
 (setq package-enable-at-startup nil)
+
+;; === Packages ===
+;; Add the following three lines to enable package install.
+;; then M-x package-install RET ox-gfm RET
+;; http://orgmode.org/manual/Installation.html#Installation
+;; If emacs report errors indicating some packages are not found,
+;; try to find them by M-x list-packages and then install.
+(require 'package)
+(setq package-archives '(
+   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+   ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+(package-initialize)
+
+(require 'ox-gfm)
 
 ;; === Packages configurated by use-package ===
 ;; https://github.com/jwiegley/use-package#installing-use-package
@@ -21,18 +40,6 @@
   :ensure t
   :bind ("M-w" . clipetty-kill-ring-save))
 
-;; === Packages ===
-;; Add the following three lines to enable package install.
-;; then M-x package-install RET ox-gfm RET
-;; http://orgmode.org/manual/Installation.html#Installation
-(require 'package)
-(setq package-archives '(
-   ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-   ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-(package-initialize)
-
-(require 'ox-gfm)
-
 ;; === Proxy ===
 ;; Replace proxy.google.com with your own.
 ;; (setq url-proxy-services '(
@@ -46,9 +53,9 @@
 ;; https://github.com/tumashu/cnfonts#org8dffa7c
 ;; M-X package-install RET cnfonts RET
 (require 'cnfonts)
-;; 让 cnfonts 随着 Emacs 自动生效。
+;; Let cnfonts enabled.
 (cnfonts-enable)
-;; 让 spacemacs mode-line 中的 Unicode 图标正确显示。
+;; Fix the Unicode icon in "spacemacs mode-line".
 (cnfonts-set-spacemacs-fallback-fonts)
 
 ;; === Markdown ===
@@ -57,13 +64,16 @@
 (add-to-list 'auto-mode-alist '("\\.html" . jekyll-html-mode))
 
 ;; === Working directory ===
-(cond ((eq system-type 'widows)
-       (setq wdir "d:/Workspace/org")
-       (setq pdir "d:/Workspace/publish"))
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/System-Environment.html
+(cond ((eq system-type 'windows-nt)
+       (setq wdir "D:\\Workspace\\org")
+       (setq pdir "D:\\Workspace\\publish"))
       ((eq system-type 'gnu/linux)
        (setq wdir "/home/wsl/workspace/org")
        (setq pdir "/home/wsl/workspace/publish"))
 )
+(message "Set workspace wdir as: %s" wdir)
+(message "Set workspace pdir as: %s" pdir)
 
 ;; === Org ===
 ;; http://orgmode.org/worg/org-tutorials/org-publish-html-tutorial.html
@@ -202,7 +212,7 @@
     ))
 
 ;; === Default directory and files === 
-(message "Set workspace dir as: %s" wdir)
+(message "Change working dir as: %s" wdir)
 (cd wdir)
 (find-file (concat (file-name-as-directory wdir) "todo.org"))
 (find-file (concat (file-name-as-directory wdir) "tmp.org"))
