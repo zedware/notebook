@@ -5,7 +5,10 @@ use std::fs;
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
     dbg!(&args);
-    let config = Config::new(&args);
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {err}");
+        process::exit(1);
+    });
     grep_file(config);
 }
 
@@ -15,20 +18,21 @@ struct Config {
 }
 
 impl Config {
-    fn new(args: &[String]) -> Config {
-        parse_args(args)
+    fn new(args: &[String]) -> Result<Config, &'static str> {
+        return parse_args(args);
     }
 }
 
-fn parse_args(args: &[String]) -> Config {
+fn parse_args(args: &[String]) -> Result<Config, &'static str> {
     if args.len() != 2 {
         eprintln!("Arguments not equal to 2!");
-        process::exit(1);
+        // process::exit(1);
+        return Err("Arguments not equal to 2!");
     }
 
     let query = args[0].clone();
     let file = args[1].clone();
-    Config {query, file}
+    Ok(Config {query, file})
 }
 
 fn grep_file(config: Config) -> () {
