@@ -1,0 +1,75 @@
+#!/bin/sh
+# Git commit-msg hook: Enforce each line <= 72 columns
+#
+# Checks that no line in the commit message exceeds 72 columns/characters.
+# Skips git comments (lines starting with '#') and blank lines.
+# Supports full-width / East Asian characters (2 columns).
+
+msg_file="$1"
+
+if [ ! -f "$msg_file" ]; then
+    exit 0
+fi
+
+if command -v python >/dev/null 2>&1; then
+    python - "$msg_file" << 'EOF'
+import sys
+import unicodedata
+
+msg_file = sys.argv[1]
+has_error = False
+
+def col_width(s):
+    w = 0
+    for ch in s:
+        if unicodedata.east_asian_width(ch) in ('W', 'F'):
+            w += 2
+        else:
+            w += 1
+    return w
+
+try:
+    with open(msg_file, 'r', encoding='utf-8', errors='replace') as f:
+        lines = f.readlines()
+except Exception:
+    sys.exit(0)
+
+for idx, raw_line in enumerate(lines, start=1):
+    line = raw_line.rstrip('\r\n')
+    if line.startswith('#') or not line:
+        continue
+    width = col_width(line)
+    if width > 72:
+        print(f"Error: Line {idx} exceeds 72 columns ({width} columns):", file=sys.stderr)
+        print(f"  --> {line}", file=sys.stderr)
+        has_error = True
+
+if has_error:
+    print("\nCommit rejected: Every line of the commit message must not exceed 72 columns.\n", file=sys.stderr)
+    sys.exit(1)
+
+sys.exit(0)
+EOF
+else
+    export LC_ALL=C.UTF-8
+    has_error=0
+    line_no=0
+    while IFS= read -r raw_line || [ -n "$raw_line" ]; do
+        line_no=$((line_no + 1))
+        line=$(printf '%s' "$raw_line" | tr -d '\r')
+        case "$line" in
+            \#*|"") continue ;;
+        esac
+        char_count=$(printf '%s' "$line" | wc -m)
+        if [ "$char_count" -gt 72 ]; then
+            echo "Error: Line $line_no exceeds 72 columns ($char_count chars):" >&2
+            echo "  --> $line" >&2
+            has_error=1
+        fi
+    done < "$msg_file"
+    if [ "$has_error" -ne 0 ]; then
+        echo "" >&2
+        echo "Commit rejected: Every line of the commit message must not exceed 72 columns." >&2
+        exit 1
+    fi
+fi
